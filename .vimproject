@@ -1,0 +1,20 @@
+MutSig=/$PWD filter="*.rb *.R *.js *.sass *.haml *.tsv" {
+ workflow.rb
+ lib=lib {
+  rbbt=rbbt{
+   sources=sources{
+    MutSig.rb
+   }
+  }
+ }
+ www=www{
+  views=views{
+   entity=entity{
+    Study=Study{
+     MutSig.haml
+     MutSig.check
+    }
+   }
+  }
+ }
+}
