@@ -17,10 +17,10 @@ module MutSig
 
     coverage = MutSig.exome_full192_coverage.produce.find if coverage.nil?
     covariates = MutSig.gene_covariates.produce.find if covariates.nil?
-    MutSig.mutation_type_dictionary_file.produce
+    MutSig.mutation_type_dictionary_file_ext.produce
     MutSig.exome_full192_coverage.produce
 
-    cmd = "bash -c 'ex  -s -c /^#:/d -c s/^#// -c wq /job/maf_file ; /opt/MutSigCV_1.4/run_MutSigCV.sh /opt/mcr/v81 /job/maf_file /job/coverage /job/covariates /result/out /data/mutation_type_dictionary_file /data/chr_files_hg19/'"
+    cmd = "bash -c 'ex  -s -c /^#:/d -c s/^#// -c wq /job/maf_file ; /opt/MutSigCV_1.4/run_MutSigCV.sh /opt/mcr/v81 /job/maf_file /job/coverage /job/covariates /result/out /data/mutation_type_dictionary_file_ext /data/chr_files_hg19/'"
     TmpFile.with_file do |tmpdirectory|
       io = Docker.run('jacmarjorie/mutsig', cmd, 
                       :directory => tmpdirectory,  
@@ -33,6 +33,7 @@ module MutSig
         log :preprocess, line if line =~ /^MutSigCV: PRE/
         log :run, line if line =~ /^MutSigCV: RUN/
       end
+
       tsv = file('result')["out.sig_genes.txt"].tsv :header_hash => "", :type => :list
       tsv.namespace = organism
       tsv.key_field = "Associated Gene Name"
