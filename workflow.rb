@@ -6,6 +6,7 @@ require 'rbbt/sources/organism'
 Misc.add_libdir if __FILE__ == $0
 require 'rbbt/sources/MutSig'
 
+Workflow.require_workflow "Study"
 module MutSig
   extend Workflow
 
